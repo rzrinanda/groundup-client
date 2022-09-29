@@ -22,7 +22,7 @@ function App() {
     { name: "Milling Machine", code: "MILL" },
   ];
 
-  const { selectedMachine, setMachine } = useState(null);
+  const [selectedMachine, setMachine] = useState(machine);
 
   const Header = () => {
     return (
@@ -72,8 +72,8 @@ function App() {
         {/* Header Content */}
         <div className="bg-white border border-gray-200 rounded-md p-4">
           <Dropdown
-            value={selectedMachine}
-            options={machine}
+            value={"CNC"}
+            options={selectedMachine}
             onChange={(e) => setMachine(e.value)}
             optionLabel="name"
             optionValue="code"
@@ -82,7 +82,7 @@ function App() {
         </div>
         <div className="grid grid-cols-4">
           {/* Sidebar Content */}
-          <div className="bg-white border border-gray-200 h-screen rounded-md">
+          <div className="bg-white border border-gray-200 h-full rounded-md">
             <div className="flex border-b-2 border-gray-200">
               <Button
                 className="p-button-secondary p-button-text pt-10"
@@ -295,7 +295,7 @@ function App() {
             </div>
           </div>
           {/* Body Content */}
-          <div className="col-span-3 bg-white p-4 border border-gray-200 h-screen rounded-md">
+          <div className="col-span-3 bg-white p-4 border border-gray-200 h-full rounded-md">
             <div className="gap-4">
               <div className="border-b-2">
                 <div style={{ fontSize: "25px" }}>Alert ID #00023123</div>
@@ -320,9 +320,14 @@ function App() {
                     />
                   </div>
                   {/* <Waveform buffer={Sound1} height={150} /> */}
-                  <img src={Waveform1} alt="" style={{paddingTop: "1rem"}}/>
-                  <img src={Spectrogram1} alt="" className="p-4"/>
-                  <div></div>
+                  <img src={Waveform1} alt="" style={{ paddingTop: "1rem" }} />
+                  <img src={Spectrogram1} alt="" className="p-4" />
+                  <div className="pl-4" style={{ fontSize: "15px" }}>
+                    <p className="font-bold">Equipment</p>
+                    <p className="p-2">CNC Machine</p>
+                    <p className="font-bold pt-6">Suspected Reason</p>
+                    <Dropdown className="h-2 w-2" placeholder="Unknown Anomally"/>
+                  </div>
                 </div>
                 <div>
                   {/* Header Machine Output */}
@@ -337,8 +342,8 @@ function App() {
                     />
                   </div>
                   {/* <Waveform buffer={Sound1} height={150} /> */}
-                  <img src={Waveform2} alt="" style={{paddingTop: "1rem"}}/>
-                  <img src={Spectrogram2} alt="" style={{padding: "1rem"}}/>
+                  <img src={Waveform2} alt="" style={{ paddingTop: "1rem" }} />
+                  <img src={Spectrogram2} alt="" style={{ padding: "1rem" }} />
                 </div>
               </div>
             </div>
