@@ -381,7 +381,7 @@ function App() {
                       value={comments}
                       onChange={(e) => setComments(e.target.value)}
                     />
-                    <Button
+                    {/* <Button
                       className="p-button-sm"
                       style={{
                         marginTop: "1.5rem",
@@ -392,8 +392,24 @@ function App() {
                         fontSize: "15px",
                       }}
                     >
-                      Update
-                    </Button>
+                      UPDATE
+                    </Button> */}
+                  </div>
+                  <div className="p-4">
+                    <button
+                      style={{
+                        backgroundColor: "#526CFE",
+                        color: "#fff",
+                        padding: "9px",
+                        borderRadius: "8px",
+                        width: "25%",
+                        fontSize: "15px",
+                        fontWeight: 500,
+                      }}
+                      onClick={() => console.log("submit")}
+                    >
+                      UPDATE
+                    </button>
                   </div>
                 </div>
                 <div>
