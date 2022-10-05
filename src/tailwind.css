@@ -62,3 +62,9 @@
     font-weight: 900;
     src: url("./assets/fonts/SourceSansPro/SourceSansPro-Black.ttf") format("truetype");
   }
+
+  .p-dropdown .p-dropdown-label p.input-text {
+    white-space: normal;
+    padding-top: 14px;
+    font-size: 15px;
+  }

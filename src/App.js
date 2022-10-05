@@ -11,6 +11,7 @@ import Waveform2 from "./assets/png/waveform 2.png";
 import Spectrogram1 from "./assets/png/spectrogram 1.png";
 import Spectrogram2 from "./assets/png/spectrogram 2.png";
 import { Dropdown } from "primereact/dropdown";
+import { InputTextarea } from "primereact/inputtextarea";
 import { Button } from "primereact/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretLeft } from "@fortawesome/free-solid-svg-icons";
@@ -21,18 +22,40 @@ function App() {
     { name: "CNC Machine", code: "CNC" },
     { name: "Milling Machine", code: "MILL" },
   ];
+  const actions = [
+    { name: "Immediate", code: "IM" },
+    { name: "Later", code: "LT" },
+    { name: "No Action", code: "NA" },
+  ];
+  const reasons = [
+    { name: "Spindle Error", code: "SE" },
+    { name: "Axis Problem", code: "AP" },
+    { name: "Machine Crash", code: "MC" },
+    { name: "Router Fault", code: "RF" },
+    { name: "Normal", code: "NE" },
+  ];
 
   const [selectedMachine, setMachine] = useState(machine);
+  const [selectedAction, setAction] = useState(actions);
+  const [selectedReason, setReason] = useState(reasons);
+  const [comments, setComments] = useState("");
 
   const Header = () => {
     return (
       <div className="grid grid-cols-2  bg-white h-[53px] border-b-2">
-        <div className="flex items-center justify-start gap-4 pl-4">
+        <div
+          className="flex items-center justify-start gap-4 pl-4"
+          style={{ fontSize: "13px" }}
+        >
           <img src={BrandLogo} alt="" className="pr-8" />
           <div className="font-normal">DASHBOARD</div>
           <div
             className="flex items-center px-4 hover:bg-[#F0F5FF] hover:cursor-pointer hover:border-b hover:border-b-[#3478FC] h-full"
-            style={{}}
+            style={{
+              backgroundColor: "#F0F5FF",
+              borderBottomWidth: "3px",
+              borderBottomColor: "#3478FC",
+            }}
           >
             ALERT
           </div>
@@ -325,8 +348,68 @@ function App() {
                   <div className="pl-4" style={{ fontSize: "15px" }}>
                     <p className="font-bold">Equipment</p>
                     <p className="p-2">CNC Machine</p>
-                    <p className="font-bold pt-6">Suspected Reason</p>
-                    <Dropdown className="h-2 w-2" placeholder="Unknown Anomally"/>
+                    <p className="font-bold" style={{ paddingTop: "1rem" }}>
+                      Suspected Reason
+                    </p>
+                    <Dropdown
+                      className="h-2 w-2"
+                      placeholder="Unknown Anomally"
+                      options={selectedReason}
+                      onChange={(e) => setReason(e.value)}
+                      optionLabel="name"
+                      optionValue="code"
+                      style={{ width: "15rem" }}
+                    />
+                    <p className="font-bold" style={{ paddingTop: "1rem" }}>
+                      Action Required
+                    </p>
+                    <Dropdown
+                      className="h-2 w-2"
+                      placeholder="Select Action"
+                      options={selectedAction}
+                      onChange={(e) => setAction(e.value)}
+                      optionLabel="name"
+                      optionValue="code"
+                      style={{ width: "15rem" }}
+                    />
+                    <p className="font-bold" style={{ paddingTop: "1.5rem" }}>
+                      Comments
+                    </p>
+                    <InputTextarea
+                      rows={4}
+                      cols={50}
+                      value={comments}
+                      onChange={(e) => setComments(e.target.value)}
+                    />
+                    {/* <Button
+                      className="p-button-sm"
+                      style={{
+                        marginTop: "1.5rem",
+                        paddingTop: "0.5rem",
+                        paddingBottom: "0.5rem",
+                        paddingLeft: "2rem",
+                        paddingRight: "2rem",
+                        fontSize: "15px",
+                      }}
+                    >
+                      UPDATE
+                    </Button> */}
+                  </div>
+                  <div className="p-4">
+                    <button
+                      style={{
+                        backgroundColor: "#526CFE",
+                        color: "#fff",
+                        padding: "9px",
+                        borderRadius: "8px",
+                        width: "25%",
+                        fontSize: "15px",
+                        fontWeight: 500,
+                      }}
+                      onClick={() => console.log("submit")}
+                    >
+                      UPDATE
+                    </button>
                   </div>
                 </div>
                 <div>
