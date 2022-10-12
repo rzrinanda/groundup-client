@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReactAudioPlayer from "react-audio-player";
 import Sound1 from "../assets/audio/1.wav";
 import Waveform1 from "../assets/png/waveform 1.png";
@@ -10,9 +10,10 @@ import { InputTextarea } from "primereact/inputtextarea";
 import { Button } from "primereact/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretLeft } from "@fortawesome/free-solid-svg-icons";
+import { getMachines } from "../api/Machine.api";
 
 const Content = () => {
-  const machine = [
+  let machine = [
     { name: "CNC Machine", code: "CNC" },
     { name: "Milling Machine", code: "MILL" },
   ];
@@ -33,13 +34,25 @@ const Content = () => {
   const [selectedAction, setAction] = useState(actions);
   const [selectedReason, setReason] = useState(reasons);
   const [comments, setComments] = useState("");
+  const [defaultMachine, setDefaultMachine] = useState("");
+
+  useEffect(() => {
+    getMachines().then((result) => {
+      console.log("DATAX", result.machineData);
+      machine = result.machineData.map((m) => {
+        return { name: m.machineName, code: m._id };
+      });
+      // setMachine(machine);
+      setDefaultMachine("CNC");
+    });
+  }, []);
 
   return (
     <div className="bg-[#F8F8FF] p-4 h-screen">
       {/* Header Content */}
       <div className="bg-white border border-gray-200 rounded-md p-4">
         <Dropdown
-          value={"CNC"}
+          value={defaultMachine}
           options={selectedMachine}
           onChange={(e) => setMachine(e.value)}
           optionLabel="name"
