@@ -11,12 +11,13 @@ import { Button } from "primereact/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretLeft } from "@fortawesome/free-solid-svg-icons";
 import { getMachines } from "../api/Machine.api";
+import { getAnomalyByMachine } from "../api/Anomaly.api";
 
 const Content = () => {
-  let machine = [
-    { name: "CNC Machine", code: "CNC" },
-    { name: "Milling Machine", code: "MILL" },
-  ];
+  // let machine = [
+  //   // { name: "CNC Machine", code: "CNC" },
+  //   // { name: "Milling Machine", code: "MILL" },
+  // ];
   const actions = [
     { name: "Immediate", code: "IM" },
     { name: "Later", code: "LT" },
@@ -30,30 +31,59 @@ const Content = () => {
     { name: "Normal", code: "NE" },
   ];
 
-  const [selectedMachine, setMachine] = useState(machine);
+  const [selectedMachine, setMachine] = useState("");
+  const [machineList, setMachineList] = useState(null);
+  const [anomalyList, setAnomalyList] = useState(null);
   const [selectedAction, setAction] = useState(actions);
   const [selectedReason, setReason] = useState(reasons);
   const [comments, setComments] = useState("");
-  const [defaultMachine, setDefaultMachine] = useState("");
+  // const [defaultMachine, setDefaultMachine] = useState("");
 
   useEffect(() => {
-    getMachines().then((result) => {
-      console.log("DATAX", result.machineData);
-      machine = result.machineData.map((m) => {
-        return { name: m.machineName, code: m._id };
-      });
-      // setMachine(machine);
-      setDefaultMachine("CNC");
-    });
+    const fetchMachine = async () => {
+      try {
+        const machineData = await getMachines();
+
+        //get id as default machine
+        const defaultMachine = machineData.machineData.find((m) =>
+          m.machineName.includes("CNC Machine")
+        );
+
+        const mList = machineData.machineData.map((m) => {
+          return { name: m.machineName, code: m._id };
+        });
+        setMachineList(mList);
+        setMachine(defaultMachine._id);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchMachine();
   }, []);
+
+  useEffect(() => {
+    const fetchAnomaly = async (machineId) => {
+      try {
+        if (machineId) {
+          const anomalies = await getAnomalyByMachine(machineId);
+          console.log("anomaly", anomalies);
+          setAnomalyList(anomalies);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchAnomaly(selectedMachine);
+  }, [selectedMachine]);
 
   return (
     <div className="bg-[#F8F8FF] p-4 h-screen">
       {/* Header Content */}
       <div className="bg-white border border-gray-200 rounded-md p-4">
         <Dropdown
-          value={defaultMachine}
-          options={selectedMachine}
+          value={selectedMachine}
+          options={machineList}
           onChange={(e) => setMachine(e.value)}
           optionLabel="name"
           optionValue="code"
@@ -119,7 +149,7 @@ const Content = () => {
                     backgroundColor: "#3478FC",
                   }}
                 ></div>
-                <div className="pl-4 col-span-2">ID #00023123</div>
+                <div className="pl-4 col-span-2">ID #00023121</div>
               </div>
               <div className="flex justify-end">
                 <div
